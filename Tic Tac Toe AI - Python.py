@@ -123,7 +123,6 @@ class RandomAI:
             if game.is_valid_move(i):
                 possibleMoves.append(i)
         return (random.choice(possibleMoves))
-
 # this AI makes a list of possible moves, then preferred moves, then picks a random preferred
 # move. It has no block function because there were too many bugs.
 class Felix_Jessie_AI:
@@ -205,19 +204,17 @@ class Felix_Jessie_AI:
             except IndexError:
                 pass
             # this is to set up a potential trap
-            if m == 0 or m == 2 or m ==6 or m == 8 and self.determine_player(game):
+            if m == 0 or m == 2 or m ==6 or m == 8:
                     moves.append(m)
             # we want this to only happen when the AI is p2 so that it can block possible traps
             if m == 4 and not self.determine_player(game):
                 return m
-            if m == 1 or m == 3 or m ==5 or m ==7 and not self.determine_player(game):
-                moves.append(m)
         # if there are no good moves, it picks the first one
         if len(moves)==0:
             return possibleMoves[0]
         # picks a random good move
         return moves[random.randint(0, len(moves)-1)]
-       
+
 class MinimaxAI:
     def FJ_minimax(self, game, depth, is_maximizing):
         #BASE CASE(s) check for win or tie
