@@ -143,7 +143,6 @@ class Felix_Jessie_AI:
                 game.board[spot] = "O"
                 win = game.check_win(game.board) #check win returns true or false using any(), which checks for true items in a list
                 if win:
-                    print ("Good Game!")
                     win_spot = spot
                     game.board[spot] = ' '
                     return win_spot
@@ -154,7 +153,6 @@ class Felix_Jessie_AI:
                 game.board[spot] = "X"
                 lose = game.check_win(game.board)
                 if lose:
-                    print ("BLOCK")
                     block_spot = spot
                     game.board[spot] = ' '
                     return block_spot
@@ -206,16 +204,18 @@ class Felix_Jessie_AI:
             except IndexError:
                 pass
             # this is to set up a potential trap
-            if m == 0 or m == 2 or m ==6 or m == 8:
+            if m == 0 or m == 2 or m ==6 or m == 8 and self.determine_player(game):
                     moves.append(m)
             # we want this to only happen when the AI is p2 so that it can block possible traps
             if m == 4 and not self.determine_player(game):
                 return m
+            if m == 1 or m == 3 or m ==5 or m ==7 and not self.determine_player(game):
+                moves.append(m)
         # if there are no good moves, it picks the first one
         if len(moves)==0:
             return possibleMoves[0]
         # picks a random good move
-        return moves[random.randint(0, len(moves)-1)]
+        return moves[random.randint(0, len(moves)-1)]]
             
             
 if __name__ == "__main__":
