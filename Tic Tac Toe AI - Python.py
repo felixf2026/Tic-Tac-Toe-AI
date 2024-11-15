@@ -286,6 +286,6 @@ if __name__ == "__main__":
     player1 = HumanPlayer('X')
     #player1 = AIPlayer('X', SimpleAI())  # Replace with student AI implementation - name function with your name ie: "Jim-AI"
     #player2 = AIPlayer('X', RandomAI())  # Replace with another student AI implementation or the same for testing ie: "Mary-AI"
-    player2 = AIPlayer('O', MinimaxAI('O')) #MinimaxAI needs 
+    player2 = AIPlayer('O', MinimaxAI('O')) #MinimaxAI needs to call with symbol to know which symbol it is.
     game = TicTacToe(player1, player2)
     game.play()
