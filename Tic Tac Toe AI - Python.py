@@ -271,7 +271,10 @@ class MinimaxAI:
                     best_move = move
 
         return best_move
-  
+    
+    def board_eval(self, game):
+        #function to evaluate the score (-1, 0, or 1) of any board part-way through the game
+        pass
             
 if __name__ == "__main__":
     # Here you can decide how to initialize players
