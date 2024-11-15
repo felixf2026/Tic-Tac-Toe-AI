@@ -219,23 +219,30 @@ class Felix_Jessie_AI:
         return moves[random.randint(0, len(moves)-1)]
 
 class MinimaxAI:
-    def FJ_minimax(self, game, depth, is_maximizing):
+    def __init__(self,symbol): #sets symbol for AI so that it can play O or X
+        self.symbol=symbol
+        if symbol=='X':
+            self.opponent_symbol='O'
+        else:
+            self.opponent_symbol='X'
+    
+    def FJ_minimax(self, game, depth, maximizing):
         #BASE CASE(s) check for win or tie
-
+        
         if game.check_win(game.board):
-            if not is_maximizing:
+            if not maximizing:
                 return 1
             else:
                 return -1
         elif game.is_board_full():
             return 0
 
-        if is_maximizing:
+        if maximizing:
             best_score = -float('inf') #best score starts low at negative infinity
             for move in range(9): #each space in 3x3 grid
                 if game.is_valid_move(move):
-                    game.make_move(move, 'X') #test move X
-                    score = self.FJ_minimax(game, depth + 1, False) #recursion! (calls as minimizer)
+                    game.make_move(move, self.symbol) #test move
+                    score = self.FJ_minimax(game, depth+1, False) #recursion! (calls as minimizer)
                     game.board[move] = ' ' #undo move
                     best_score = max(score, best_score) #update score
             return best_score
@@ -243,8 +250,8 @@ class MinimaxAI:
             best_score = float('inf') #set best at infinity (so we can only go down)
             for move in range(9): #pretty much the same
                 if game.is_valid_move(move):
-                    game.make_move(move, 'O') #moves O bc this is minimizer
-                    score = self.FJ_minimax(game, depth + 1, True) #recurs as max
+                    game.make_move(move, self.opponent_symbol) #moves p2 bc its minimizing
+                    score = self.FJ_minimax(game, depth+1, True) #recurs as max
                     game.board[move] = ' '
                     best_score = min(score, best_score)
             return best_score
@@ -255,15 +262,16 @@ class MinimaxAI:
 
         for move in range(9): #loop through all possible moves on the 3x3 board
             if game.is_valid_move(move):
-                game.make_move(move, 'X') #ai test plays X 
+                game.make_move(move, self.symbol) #ai test plays player 1
                 score = self.FJ_minimax(game, 0, False)  #call minimax using min for the next player.
-                game.board[move] = ' '  #undo move
+                game.board[move] = ' '  #undo move 
                 #update the best score if one is found
-                if score > best_score:
+                if score > best_score or (score == best_score and best_move is None):
                     best_score = score
                     best_move = move
 
-        return best_move  
+        return best_move
+  
             
 if __name__ == "__main__":
     # Here you can decide how to initialize players
@@ -274,11 +282,10 @@ if __name__ == "__main__":
     # game.play()
 
     # For students' AI competition:
-    #player1 = HumanPlayer('X')
-    #player2= HumanPlayer('X')
-    #player2 = AIPlayer('X', SimpleAI())  # Replace with student AI implementation - name function with your name ie: "Jim-AI"
-    #player1 = AIPlayer('O', RandomAI())  # Replace with another student AI implementation or the same for testing ie: "Mary-AI"
-    player1 = AIPlayer('O', Felix_Jessie_AI())
-    player2 = AIPlayer('X', MinimaxAI())
+    player1 = HumanPlayer('X')
+    #player1 = AIPlayer('X', SimpleAI())  # Replace with student AI implementation - name function with your name ie: "Jim-AI"
+    #player2 = AIPlayer('X', RandomAI())  # Replace with another student AI implementation or the same for testing ie: "Mary-AI"
+    player2 = AIPlayer('O', MinimaxAI('O')) #MinimaxAI needs to call with symbol to know which symbol it is.
+
     game = TicTacToe(player1, player2)
     game.play()
